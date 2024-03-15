@@ -31,7 +31,80 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	int m = 0;
+
+	if (l < r)
+	{
+		// get the mid point
+		m =  (l + (r-1))/2;
+
+		// Sort first and second halves
+		mergeSort(pData, l, m);
+		mergeSort(pData, m+1, r);
+
+		// printf("Testing l=%d r=%d m=%d\n", l, r, m);
+	
+
+	int i, j, k;
+	int h1 = m - l + 1;
+	int h2 = r - m;
+
+	//Allocating temp arrays
+	int *L = (int*)Alloc(h1*sizeof(int));
+	int *R = (int*)Alloc(h2*sizeof(int));
+
+	// Copy data to temp arrays L[] and R[] 
+		for (i = 0; i < h1; i++)
+			L[i] = pData[l + i];
+
+		for (j = 0; j < h2; j++)
+			R[j] = pData[m + 1+ j];
+	//Merge the temp arrays back into arr[l..r]
+
+	i = 0; // Initial index of first subarray
+	j = 0; // Initial index of second subarray
+	k = l; // Initial index of merged subarray
+
+	while (i < h1 && j < h2)
+	{
+		if (L[i] <= R[j])
+		{
+			pData[k] = L[i];
+			i++;
+		}
+
+		else	
+		{
+			pData[k] = R[j];
+			j++;
+		}
+			k++;
+	}
+
+	/* Copy the remaining elements of L[], if there
+are any */
+	while (i < h1)
+	{
+		pData[k] = L[i];
+		i++;
+		k++;
+	}
+
+/* Copy the remaining elements of R[], if there
+are any */
+	while (j < h2)
+	{
+		pData[k] = R[j];
+		j++;
+		k++;	
+	}
+
+	DeAlloc(L);
+	DeAlloc(R);
+	}
+
 }
+
 
 // parses input file to an integer array
 int parseData(char *inputFileName, int **ppData)
